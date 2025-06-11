@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JustACalculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: #fff;
+      scroll-behavior: smooth;
+    }
+    header {
+      text-align: center;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    header h1 {
+      font-size: 3rem;
+      letter-spacing: 1px;
+    }
+    section {
+      padding: 3rem 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #ffe082;
+    }
+    .calc-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 3rem;
+    }
+    input, select, button {
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 0.5rem;
+      width: 100%;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #ffc107;
+      color: #000;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #ffb300;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .inline-inputs input {
+      width: calc(100% - 2rem);
+      display: inline-block;
+    }
+    .remove-btn {
+      background-color: red;
+      color: white;
+      width: 2rem;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>JustACalculator</h1>
+    <p>One site. Many calculators. Infinite possibilities.</p>
+  </header>
+
+  <!-- Normal Calculator -->
+  <section id="normal">
+    <h2>Normal Calculator</h2>
+    <div class="calc-box">
+      <div id="normal-inputs"></div>
+      <button onclick="addInput()">Add Number</button>
+      <select id="norm-op">
+        <option value="+">+</option>
+        <option value="-">-</option>
+      </select>
+      <button onclick="calcNormal()">Calculate</button>
+      <div class="result" id="norm-res"></div>
+    </div>
+  </section>
+
+  <!-- BMI Calculator -->
+  <section id="bmi">
+    <h2>BMI Calculator</h2>
+    <div class="calc-box">
+      <input id="bmi-weight" type="number" placeholder="Weight in kg">
+      <input id="bmi-height" type="number" placeholder="Height in cm">
+      <button onclick="calcBMI()">Calculate</button>
+      <div class="result" id="bmi-res"></div>
+    </div>
+  </section>
+
+  <!-- Age Calculator -->
+  <section id="age">
+    <h2>Age Calculator</h2>
+    <div class="calc-box">
+      <input id="birth-year" type="number" placeholder="Enter birth year">
+      <button onclick="calcAge()">Calculate</button>
+      <div class="result" id="age-res"></div>
+    </div>
+  </section>
+
+  <!-- Percentage Calculator -->
+  <section id="percent">
+    <h2>Percentage Calculator</h2>
+    <div class="calc-box">
+      <input id="part" type="number" placeholder="Part">
+      <input id="whole" type="number" placeholder="Whole">
+      <button onclick="calcPercent()">Calculate</button>
+      <div class="result" id="percent-res"></div>
+    </div>
+  </section>
+
+  <!-- Happiness Calculator -->
+  <section id="happy">
+    <h2>Happiness Calculator</h2>
+    <div class="calc-box">
+      <label>How well did you sleep? (0-10)</label>
+      <input id="sleep" type="number" min="0" max="10">
+      <label>How good is your mood right now? (0-10)</label>
+      <input id="mood" type="number" min="0" max="10">
+      <label>How exciting was your day? (0-10)</label>
+      <input id="day" type="number" min="0" max="10">
+      <button onclick="calcHappiness()">Check Happiness</button>
+      <div class="result" id="happy-res"></div>
+    </div>
+  </section>
+
+  <!-- Mood Checker -->
+  <section id="mood">
+    <h2>Mood Checker</h2>
+    <div class="calc-box">
+      <label>Pick the word that best describes your current vibe:</label>
+      <select id="vibe">
+        <option value="excited">Excited</option>
+        <option value="tired">Tired</option>
+        <option value="bored">Bored</option>
+        <option value="joyful">Joyful</option>
+        <option value="stressed">Stressed</option>
+        <option value="relaxed">Relaxed</option>
+      </select>
+      <button onclick="checkMood()">Analyze Mood</button>
+      <div class="result" id="mood-res"></div>
+    </div>
+  </section>
+
+  <script>
+    function addInput() {
+      const container = document.getElementById("normal-inputs");
+      const div = document.createElement("div");
+      div.className = "inline-inputs";
+      div.innerHTML = `<input type='number' placeholder='Enter number' class='norm-val'><button class='remove-btn' onclick='this.parentElement.remove()'>×</button>`;
+      container.appendChild(div);
+    }
+
+    function calcNormal() {
+      const values = document.querySelectorAll(".norm-val");
+      const op = document.getElementById("norm-op").value;
+      let result = op === '+' ? 0 : parseFloat(values[0]?.value || 0);
+      values.forEach((input, i) => {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) {
+          if (op === '+') result += val;
+          else if (op === '-' && i !== 0) result -= val;
+        }
+      });
+      document.getElementById("norm-res").textContent = `Result: ${result}`;
+    }
+
+    function calcBMI() {
+      const w = parseFloat(document.getElementById("bmi-weight").value);
+      const h = parseFloat(document.getElementById("bmi-height").value) / 100;
+      if (!isNaN(w) && !isNaN(h) && h > 0) {
+        const bmi = (w / (h * h)).toFixed(2);
+        document.getElementById("bmi-res").textContent = `Your BMI: ${bmi}`;
+      }
+    }
+
+    function calcAge() {
+      const year = parseInt(document.getElementById("birth-year").value);
+      const currentYear = new Date().getFullYear();
+      if (!isNaN(year)) {
+        document.getElementById("age-res").textContent = `You are ${currentYear - year} years old.`;
+      }
+    }
+
+    function calcPercent() {
+      const part = parseFloat(document.getElementById("part").value);
+      const whole = parseFloat(document.getElementById("whole").value);
+      if (!isNaN(part) && !isNaN(whole) && whole !== 0) {
+        const percent = ((part / whole) * 100).toFixed(2);
+        document.getElementById("percent-res").textContent = `${percent}%`;
+      }
+    }
+
+    function calcHappiness() {
+      const sleep = parseFloat(document.getElementById("sleep").value);
+      const mood = parseFloat(document.getElementById("mood").value);
+      const day = parseFloat(document.getElementById("day").value);
+      if (!isNaN(sleep) && !isNaN(mood) && !isNaN(day)) {
+        const avg = ((sleep + mood + day) / 3).toFixed(1);
+        let msg = avg >= 8 ? "You're super happy today! 🌞" :
+                  avg >= 5 ? "You're moderately happy. 😊" :
+                             "Let's cheer you up! 💖";
+        document.getElementById("happy-res").textContent = msg + ` (Score: ${avg})`;
+      }
+    }
+
+    function checkMood() {
+      const vibe = document.getElementById("vibe").value;
+      let message = "";
+      switch(vibe) {
+        case 'excited': message = "You're buzzing with energy! ⚡"; break;
+        case 'tired': message = "Rest up and recharge. 💤"; break;
+        case 'bored': message = "Time for a fun project! 🎨"; break;
+        case 'joyful': message = "Keep spreading that joy! 🌈"; break;
+        case 'stressed': message = "Take a deep breath. You got this! 💪"; break;
+        case 'relaxed': message = "Perfect vibe. Stay calm and carry on. 🧘"; break;
+      }
+      document.getElementById("mood-res").textContent = message;
+    }
+
+    // Add initial input on load
+    window.onload = () => addInput();
+  </script>
+</body>
+</html>
